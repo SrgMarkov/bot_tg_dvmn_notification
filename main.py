@@ -20,6 +20,7 @@ if __name__ == '__main__':
     while True:
         try:
             long_polling_response = requests.get(LONG_POLLING_URL, headers=headers, params=params)
+            long_polling_response.raise_for_status()
             devman_answer = long_polling_response.json()
             if devman_answer['status'] == 'timeout':
                 params['timestamp_to_request'] = devman_answer['timestamp_to_request']
