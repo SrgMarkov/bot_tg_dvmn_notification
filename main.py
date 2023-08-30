@@ -37,7 +37,5 @@ if __name__ == '__main__':
                 else:
                     positive_text = 'Преподавателю всё понравилось. Можно приступать к следующему уроку!'
                     bot.send_message(chat_id=chat_id, text=dedent(lesson_tittle_text) + positive_text)
-        except requests.exceptions.ReadTimeout as error:
-            print(f'Ошибка: {error}')
         except requests.exceptions.ConnectionError as error:
             print(f'Прервано соединение: {error}')
