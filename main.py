@@ -1,4 +1,5 @@
 import os
+import time
 from textwrap import dedent
 from telegram import Bot
 import requests
@@ -16,6 +17,7 @@ if __name__ == '__main__':
     params = {}
 
     bot = Bot(tg_token)
+    connection_failure = False
     while True:
         try:
             long_polling_response = requests.get(LONG_POLLING_URL, headers=headers, params=params)
@@ -38,4 +40,11 @@ if __name__ == '__main__':
                     positive_text = 'Преподавателю всё понравилось. Можно приступать к следующему уроку!'
                     bot.send_message(chat_id=chat_id, text=dedent(lesson_tittle_text) + positive_text)
         except requests.exceptions.ConnectionError as error:
-            print(f'Прервано соединение: {error}')
+            if not connection_failure:
+                print(f'Ошибка сетевого соединения {error}. Перезапуск бота')
+                time.sleep(10)
+                connection_failure = True
+            else:
+                print(f'Ошибка сетевого соединения {error}. Перезапуск бота через 5 минут')
+                time.sleep(300)
+
