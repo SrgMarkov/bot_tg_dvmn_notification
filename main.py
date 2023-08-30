@@ -20,14 +20,14 @@ if __name__ == '__main__':
     connection_failure = False
     while True:
         try:
-            long_polling_response = requests.get(LONG_POLLING_URL, headers=headers, params=params)
+            long_polling_response = requests.get(LONG_POLLING_URL, headers=headers, params=params, timeout=90)
             long_polling_response.raise_for_status()
-            devman_server_response = long_polling_response.json()
-            if devman_server_response['status'] == 'timeout':
-                params['timestamp_to_request'] = devman_server_response['timestamp_to_request']
-            elif devman_server_response['status'] == 'found':
-                params['timestamp_to_request'] = devman_server_response['last_attempt_timestamp']
-                review_status = devman_server_response['new_attempts'][0]
+            review_result = long_polling_response.json()
+            if review_result['status'] == 'timeout':
+                params['timestamp_to_request'] = review_result['timestamp_to_request']
+            elif review_result['status'] == 'found':
+                params['timestamp_to_request'] = review_result['last_attempt_timestamp']
+                review_status = review_result['new_attempts'][0]
                 lesson_tittle_text = f'''\
                                      У Вас проверили работу "{review_status["lesson_title"]}" 
                                      {review_status["lesson_url"]}
@@ -39,6 +39,8 @@ if __name__ == '__main__':
                 else:
                     positive_text = 'Преподавателю всё понравилось. Можно приступать к следующему уроку!'
                     bot.send_message(chat_id=chat_id, text=dedent(lesson_tittle_text) + positive_text)
+        except requests.exceptions.ReadTimeout as error:
+            continue
         except requests.exceptions.ConnectionError as error:
             if not connection_failure:
                 print(f'Ошибка сетевого соединения {error}. Перезапуск бота')
