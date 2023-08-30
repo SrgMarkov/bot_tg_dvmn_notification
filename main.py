@@ -21,12 +21,12 @@ if __name__ == '__main__':
         try:
             long_polling_response = requests.get(LONG_POLLING_URL, headers=headers, params=params)
             long_polling_response.raise_for_status()
-            devman_answer = long_polling_response.json()
-            if devman_answer['status'] == 'timeout':
-                params['timestamp_to_request'] = devman_answer['timestamp_to_request']
-            elif devman_answer['status'] == 'found':
-                params['timestamp_to_request'] = devman_answer['last_attempt_timestamp']
-                review_status = devman_answer['new_attempts'][0]
+            devman_server_response = long_polling_response.json()
+            if devman_server_response['status'] == 'timeout':
+                params['timestamp_to_request'] = devman_server_response['timestamp_to_request']
+            elif devman_server_response['status'] == 'found':
+                params['timestamp_to_request'] = devman_server_response['last_attempt_timestamp']
+                review_status = devman_server_response['new_attempts'][0]
                 lesson_tittle_text = f'У Вас проверили работу "{review_status["lesson_title"]}"\n' \
                                      f'{review_status["lesson_url"]}\n\n'
                 if review_status['is_negative']:
