@@ -7,6 +7,7 @@ import requests
 from textwrap import dedent
 from telegram import Bot
 
+logger = logging.getLogger('Notification_bot')
 
 LONG_POLLING_URL = 'https://dvmn.org/api/long_polling/'
 
@@ -36,7 +37,6 @@ if __name__ == '__main__':
     connection_failure = False
 
     logging.basicConfig(format="%(process)d %(levelname)s %(message)s")
-    logger = logging.getLogger('Notification_bot')
     logger.setLevel(logging.INFO)
     logger.addHandler(TelegramLogsHandler(bot, chat_id))
     logger.info('Bot is running')
