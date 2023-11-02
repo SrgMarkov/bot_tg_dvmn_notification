@@ -39,7 +39,8 @@ python3 main.py
 
 Если такая команда не найдена, необходимо установить Docker для Ubuntu следуя [инструкции](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04)
 
-Запустите контейнер командой
+Создайте на сервере `.env` файл и скопируйте абсолютный путь до папки с ним в комманду ниже, запустите контейнер:
+
 ```
-docker run srgmarkov/dvmn_bot
+devman_notification_bot % docker run --rm -v env:"абсолютный путь до .env" --env-file env/.env  dvmn_bot
 ```
