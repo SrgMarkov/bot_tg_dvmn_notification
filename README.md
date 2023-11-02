@@ -15,8 +15,8 @@ Telegram бот для получения уведомлений о провер
 - Python3 должен быть уже установлен
 - в директории с файлами программы необходимо создать `.env` файл, в котором прописать токены и Ваш персональный chat_id (можно получить, написав боту [@userinfobot](https://telegram.me/userinfobot)).
 ```
-DEVMAN_API_TOKEN=thisistoKeN4example
-TELEGRAM_TOKEN=6032470479:thisistoKeN4example
+DEVMAN_TOKEN=thisistoKeN4example
+TG_TOKEN=6032470479:thisistoKeN4example
 TG_CHAT_ID=123456789 
 ```
 - Запустить телеграм бота командой **/start**
@@ -33,3 +33,13 @@ python3 main.py
 ```
 данный скрипт запускает [long polling](https://dvmn.org/encyclopedia/about-chatbots/long-polling/) до сервера devman. В случае ответа преподавателя в телеграм придет ответ от бота.
 
+### Запуск Docker контейнера на сервере
+
+Убедитесь что Docker установлен на сервере выполнив команду `docker`
+
+Если такая команда не найдена, необходимо установить Docker для Ubuntu следуя [инструкции](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04)
+
+Запустите контейнер командой
+```
+docker run srgmarkov/dvmn_bot
+```
